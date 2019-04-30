@@ -2,9 +2,12 @@ import decimal
 import math
 import time
 
+#pre: C must be positive number and have at least one edge and s,t must be part of graph
 def max_flow(C, s, t):
     ## implemented precondition
     assert(len(C) > 1)
+    assert(s >= 0 and s <= len(C))
+    assert(t >= 0 and t < = len(C))
     for i in range(len(C)):
         for n in range(len(C)):
             assert(C[i][n] >= 0)
