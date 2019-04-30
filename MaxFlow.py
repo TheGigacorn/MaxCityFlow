@@ -3,11 +3,18 @@ import math
 import time
 
 def max_flow(C, s, t):
+    ## implemented precondition
+    assert(len(C) > 1)
+    for i in range(len(C)):
+        for n in range(len(C)):
+            assert(C[i][n] >= 0)
+            assert(isinstance(C[i][n], !str))
+
     n = len(C) # C is the capacity matrix
-    F = [[0] * n for i in range(n)]
-    path = bfs(C, F, s, t)
+    F = [[0] * n for i in range(n)] # flow matrix
+    path = bfs(C, F, s, t) # path equal to shortest availible path found by bfs
     #  print path
-    while path != None:
+    while path != None: #while there is still an availible path
         flow = min(C[u][v] - F[u][v] for u,v in path)
         for u,v in path:
             F[u][v] += flow
@@ -77,14 +84,8 @@ data.close()
 
 ## driver Code  ##
 for i in range(len(cityname)):
-    if cityname[i] == "Joplin city":
-        print(i)
-    if cityname[i] == "St. Louis city":
-        print(i)
     for n in range(len(cityname)):
         if adjacencyMat[i][n] != 0:
-            if i == 448:
-                print('{} - {}: {}'.format(i, n, adjacencyMat[i][n]))
             adjacencyMatFlow[i][n] = 1
 
 totaltime = 0
