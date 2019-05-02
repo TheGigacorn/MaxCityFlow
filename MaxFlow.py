@@ -7,22 +7,21 @@ def max_flow(C, s, t):
     ## implemented precondition
     assert(len(C) > 1)
     assert(s >= 0 and s <= len(C))
-    assert(t >= 0 and t < = len(C))
+    assert(t >= 0 and t <= len(C))
     for i in range(len(C)):
         for n in range(len(C)):
-            assert(C[i][n] >= 0)
-            assert(isinstance(C[i][n], !str))
+            assert(C[i][n] >= 0) #checks for positive numbers
 
     n = len(C) # C is the capacity matrix
     F = [[0] * n for i in range(n)] # flow matrix
     path = bfs(C, F, s, t) # path equal to shortest availible path found by bfs
     #  print path
     while path != None: #while there is still an availible path
-        flow = min(C[u][v] - F[u][v] for u,v in path)
+        flow = min(C[u][v] - F[u][v] for u,v in path) #set flow to the shotest
         for u,v in path:
-            F[u][v] += flow
-            F[v][u] -= flow
-        path = bfs(C, F, s, t)
+            F[u][v] += flow #augmentations acording to path
+            F[v][u] -= flow #augmentations acording to path
+        path = bfs(C, F, s, t) #again finds the shotest path using bfs
         print('{}'.format(path))
     return sum(F[s][i] for i in range(n))
 
@@ -75,7 +74,7 @@ for i in range(0, len(latitude)):
         p = 0.017453292519943295     #Pi/180
         a = 0.5 - math.cos((float(latitude[j]) - float(latitude[i])) * p)/2 + math.cos(float(latitude[i]) * p) * math.cos(float(latitude[j])* p) * (1 - math.cos((float(longitude[j]) - float(longitude[i])) * p)) / 2
         d= 7922 * math.asin(math.sqrt(a))
-        if d <= 15: #if distance is less than 30 miles it has a direct connection
+        if d <= 15: #if distance is less than 15 miles it has a direct connection
             adjacencyMat[i][j] = d #matrix inputing
 
 adjacencyMatFlow = [[0 for i in range(len(latitude))] for j in range(len(longitude))]
@@ -85,11 +84,17 @@ for i in range(len(cityname)):
     data.write('{}\n'.format(adjacencyMat[i]))
 data.close()
 
+
 ## driver Code  ##
 for i in range(len(cityname)):
     for n in range(len(cityname)):
         if adjacencyMat[i][n] != 0:
             adjacencyMatFlow[i][n] = 1
+
+data = open('adjacencyFlowMat.txt', "w")
+for i in range(len(cityname)):
+    data.write('{}\n'.format(adjacencyMatFlow[i]))
+data.close()
 
 totaltime = 0
 source = 448
